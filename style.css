@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+
+.wrapper{
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    justify-content:space-around;
+    padding: 20px 100px;
+    flex-wrap: wrap;
+}
+
+.card{
+    flex: 40%;
+    background-color: #5d6171;
+    padding: 20px 50px;
+    border-radius: 10px;
+    border: 3px solid rgb(83, 97, 57);
+    margin: 10px;
+}
+
+@media (max-width: 800px) {
+    .card {
+      flex: 100%;
+    }
+  }
+
+body{
+    background-color: #181d23;
+}
+
+.judule{
+    padding: 20px auto;
+}
+
+input{
+    width: 100%;
+    border-radius: 20px;
+    height: 30px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: bold;
+    
+}
+.wrapper button, table button{
+    border-radius: 20px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: 10px 11px 8px 0px rgba(0,0,0,0.86); 
+box-shadow: 10px 11px 8px 0px rgba(0,0,0,0.86);
+    font-weight: bolder;
+}
+
+.table-wrapper button {
+    min-width: 150px;
+}
+
+button:hover{
+    transition-delay : 0.2s;
+    transform: translateY(5px) translateX(5px);
+    box-shadow: none;
+    cursor: pointer;
+}
+
+.table-wrapper{
+    width: 80%;
+    margin: 20px auto;
+    color: white;
+        /* -webkit-box-shadow: 2px 2px 2px 0px rgba(124, 136, 162, 0.86); 
+box-shadow: 5px 6px 8px 0px rgba(146, 150, 173, 0.86); */
+
+}
+
+.hasilGenerate{
+    font-size: 100px;
+    align-self: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}
+
+.action{
+    width: 25%;
+}
+
+#edit{
+    background-color: rgb(37, 204, 115);
+}
+#hapus{
+    color: white;
+    background-color: rgb(234, 88, 115);
+}
+
+#editRandom, #editStop{
+    width: 100%;
+    margin: 10px auto;
+}
+.editGenerate{
+    font-size: 100px;
+    align-self: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+}

@@ -1,0 +1,743 @@
+[
+    {
+        "id": "a6b3ea76a0e3770f",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "089134186278a894",
+        "type": "inject",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 370,
+        "y": 280,
+        "wires": [
+            [
+                "1ebdcd09e95bda2c",
+                "afcf9224a77b7d41"
+            ]
+        ]
+    },
+    {
+        "id": "1ebdcd09e95bda2c",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 11",
+        "func": "var rand = (Math.random() * 100).toFixed(2);\nflow.set(\"hasilGenerate\", rand)\nmsg.payload = flow.get(\"hasilGenerate\")\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 300,
+        "wires": [
+            [
+                "8daf60b9b746b37c"
+            ]
+        ]
+    },
+    {
+        "id": "8daf60b9b746b37c",
+        "type": "websocket out",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "server": "",
+        "client": "d70d6071471218f8",
+        "x": 860,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "afcf9224a77b7d41",
+        "type": "debug",
+        "z": "a6b3ea76a0e3770f",
+        "name": "debug 7",
+        "active": false,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e6146efa07a8c15a",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 710,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5f04ba776765710d",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 12",
+        "func": "msg.topic = `\nCREATE DATABASE timbangan\n`\n    \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 500,
+        "wires": [
+            [
+                "e6146efa07a8c15a"
+            ]
+        ]
+    },
+    {
+        "id": "69121d8ab82f895d",
+        "type": "inject",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 340,
+        "y": 500,
+        "wires": [
+            [
+                "5f04ba776765710d"
+            ]
+        ]
+    },
+    {
+        "id": "005e4599d021491c",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 710,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5aedad9b50f02142",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 13",
+        "func": "msg.topic = `\nCREATE TABLE hasil_timbangan (\n        ID int(11) AUTO_INCREMENT NOT NULL,\n        namaBarang varchar(50) NOT NULL,\n        kodeBarang varchar(20) NOT NULL UNIQUE,\n        berat FLOAT(5, 2) NOT NULL,\n        PRIMARY KEY(ID)\n    )\n`\n    \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 600,
+        "wires": [
+            [
+                "005e4599d021491c"
+            ]
+        ]
+    },
+    {
+        "id": "2123d840883c9e33",
+        "type": "inject",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 340,
+        "y": 600,
+        "wires": [
+            [
+                "5aedad9b50f02142"
+            ]
+        ]
+    },
+    {
+        "id": "a3c9396374123a77",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 14",
+        "func": "msg.data = msg.payload;\nvar data = msg.payload;\n\nmsg.topic = `\n    SELECT * FROM hasil_timbangan WHERE kodeBarang = '${data.kodeBarang}'\n`\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 480,
+        "wires": [
+            [
+                "f8a18156e1463a95",
+                "e9d74aa9efbdeb3c"
+            ]
+        ]
+    },
+    {
+        "id": "f8a18156e1463a95",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 1100,
+        "y": 540,
+        "wires": [
+            [
+                "17c3e9126e9f841c",
+                "e9d74aa9efbdeb3c"
+            ]
+        ]
+    },
+    {
+        "id": "b7c855d5cc2b202f",
+        "type": "http in",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "url": "record",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 1060,
+        "y": 420,
+        "wires": [
+            [
+                "a3c9396374123a77"
+            ]
+        ]
+    },
+    {
+        "id": "17c3e9126e9f841c",
+        "type": "switch",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "property": "payload.length",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            },
+            {
+                "t": "gt",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1040,
+        "y": 620,
+        "wires": [
+            [
+                "f7343670d2dc73d6"
+            ],
+            [
+                "068d87b847e18fca"
+            ]
+        ]
+    },
+    {
+        "id": "f7343670d2dc73d6",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 15",
+        "func": "var data = msg.data\nmsg.topic = `\n    INSERT INTO hasil_timbangan (namaBarang, kodeBarang, berat)\n    VALUES ('${data.namaBarang}', '${data.kodeBarang}', ${data.berat})\n`\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 680,
+        "wires": [
+            [
+                "57ee300ae53131c6"
+            ]
+        ]
+    },
+    {
+        "id": "15a2636ce7cea268",
+        "type": "http response",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1430,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "068d87b847e18fca",
+        "type": "http response",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "statusCode": "417",
+        "headers": {},
+        "x": 1430,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "c951c4c3b79a848f",
+        "type": "http response",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "statusCode": "500",
+        "headers": {},
+        "x": 1430,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "8d5af281fef78ba3",
+        "type": "catch",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "scope": [
+            "a3c9396374123a77",
+            "f8a18156e1463a95",
+            "f7343670d2dc73d6",
+            "57ee300ae53131c6"
+        ],
+        "uncaught": false,
+        "x": 1290,
+        "y": 840,
+        "wires": [
+            [
+                "c951c4c3b79a848f"
+            ]
+        ]
+    },
+    {
+        "id": "57ee300ae53131c6",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 1230,
+        "y": 740,
+        "wires": [
+            [
+                "15a2636ce7cea268"
+            ]
+        ]
+    },
+    {
+        "id": "e9d74aa9efbdeb3c",
+        "type": "debug",
+        "z": "a6b3ea76a0e3770f",
+        "name": "debug 11",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "bd6a7308474e0af3",
+        "type": "http in",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "url": "getRecord",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 340,
+        "y": 860,
+        "wires": [
+            [
+                "eb410c26393076cb"
+            ]
+        ]
+    },
+    {
+        "id": "eb410c26393076cb",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 16",
+        "func": "msg.topic = `\n SELECT * FROM hasil_timbangan\n`\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 860,
+        "wires": [
+            [
+                "35b29aedc5c3ae67"
+            ]
+        ]
+    },
+    {
+        "id": "d7b1bf4a9bdb04ec",
+        "type": "debug",
+        "z": "a6b3ea76a0e3770f",
+        "name": "debug 12",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "35b29aedc5c3ae67",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 770,
+        "y": 860,
+        "wires": [
+            [
+                "d79d4605484eede2",
+                "d7b1bf4a9bdb04ec"
+            ]
+        ]
+    },
+    {
+        "id": "d79d4605484eede2",
+        "type": "http response",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 960,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "d08041b1eb65e03b",
+        "type": "http in",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "url": "/update/:id",
+        "method": "put",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 360,
+        "y": 1180,
+        "wires": [
+            [
+                "7943b282f3151422"
+            ]
+        ]
+    },
+    {
+        "id": "292c87ee1b312366",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 810,
+        "y": 1180,
+        "wires": [
+            [
+                "6ef63c5e08b59484",
+                "1da645130cf282eb"
+            ]
+        ]
+    },
+    {
+        "id": "6ef63c5e08b59484",
+        "type": "debug",
+        "z": "a6b3ea76a0e3770f",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "b9b76d0826474113",
+        "type": "debug",
+        "z": "a6b3ea76a0e3770f",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "7943b282f3151422",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 17",
+        "func": "msg.data = msg.payload\nvar data = msg.data\nmsg.topic = `\n    UPDATE hasil_timbangan SET namaBarang = '${data.namaBarang}', kodeBarang = '${data.kodeBarang}', berat = ${data.berat} WHERE ID = ${msg.req.params.id};\n`\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 1180,
+        "wires": [
+            [
+                "292c87ee1b312366",
+                "b9b76d0826474113"
+            ]
+        ]
+    },
+    {
+        "id": "b5aa71a97f59f467",
+        "type": "http in",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "url": "/delete/:id",
+        "method": "delete",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 310,
+        "y": 1400,
+        "wires": [
+            [
+                "2d6575943665aa30"
+            ]
+        ]
+    },
+    {
+        "id": "2d6575943665aa30",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 18",
+        "func": "msg.topic = `\n    DELETE FROM hasil_timbangan WHERE ID = ${msg.req.params.id};\n`\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 1400,
+        "wires": [
+            [
+                "a171008d83e5ac7a"
+            ]
+        ]
+    },
+    {
+        "id": "a171008d83e5ac7a",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 750,
+        "y": 1400,
+        "wires": [
+            [
+                "63a2dd9b9842f149",
+                "c0eda939fbf1c15d"
+            ]
+        ]
+    },
+    {
+        "id": "63a2dd9b9842f149",
+        "type": "debug",
+        "z": "a6b3ea76a0e3770f",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "1da645130cf282eb",
+        "type": "http response",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1000,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "c0eda939fbf1c15d",
+        "type": "http response",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 940,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "0d1ea20b371ab18f",
+        "type": "http in",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "url": "edit/:id",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 350,
+        "y": 1040,
+        "wires": [
+            [
+                "050c57ed07bf0bb4"
+            ]
+        ]
+    },
+    {
+        "id": "050c57ed07bf0bb4",
+        "type": "function",
+        "z": "a6b3ea76a0e3770f",
+        "name": "function 19",
+        "func": "msg.topic = `\n    SELECT * FROM hasil_timbangan WHERE ID = ${msg.req.params.id};\n`\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 1040,
+        "wires": [
+            [
+                "d67473bd7c1322d7"
+            ]
+        ]
+    },
+    {
+        "id": "d67473bd7c1322d7",
+        "type": "mysql",
+        "z": "a6b3ea76a0e3770f",
+        "mydb": "8ce6257cd35fb69f",
+        "name": "",
+        "x": 830,
+        "y": 1040,
+        "wires": [
+            [
+                "7ef674ef6a9f2a65",
+                "6fd445d7841b4169"
+            ]
+        ]
+    },
+    {
+        "id": "7ef674ef6a9f2a65",
+        "type": "debug",
+        "z": "a6b3ea76a0e3770f",
+        "name": "debug 16",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "6fd445d7841b4169",
+        "type": "http response",
+        "z": "a6b3ea76a0e3770f",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1060,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "d70d6071471218f8",
+        "type": "websocket-client",
+        "path": "acak",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": ""
+    },
+    {
+        "id": "8ce6257cd35fb69f",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "timbangan",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]
