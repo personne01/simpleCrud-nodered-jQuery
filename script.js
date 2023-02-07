@@ -1,39 +1,45 @@
 $(document).ready(() => {
     // console.log($('.hasilGenerate').text());
     $('#example').DataTable({
-        ordering : false,
-        searching : false
+        ajax: {
+            url: 'http://localhost:1880/getRecord',
+            dataSrc: '',
+            method: "GET",
+        },
+        columns: [{
+            data: null,
+            render: (data, type, row, meta) => {
+                return meta.row + 1
+            }
+        },
+        {
+            data: "namaBarang"
+        },
+        {
+            data: "kodeBarang"
+        },
+        {
+            data: "berat"
+        },
+        {
+            data: null,
+            render: (data, type, row, meta) => {
+                return `
+                    <button type="button" id="edit" data-id=${data.ID} data-toggle="modal" data-target="#exampleModal" onclick="findById(${data.ID})">
+                    Edit
+                    </button>
+                    <button type="button" id="hapus" class="hapus" onclick="deleteById(${data.ID})">
+                    Delete
+                    </button>
+                `
+            }
+        }
+    ]
     });
-    let awalkode = $("#inputKode").val()
-    let awalnama = $("#inputNama").val()
-    // $('#table_id').DataTable();
-    $.get('http://localhost:1880/getRecord', (res) => {
-        res.forEach(i => {
-            $("#table-contain").append(`
-            <tr>
-                <td>${i.ID}</td>
-                <td>${i.namaBarang}</td>
-                <td>${i.kodeBarang}</td>
-                <td>${i.berat}</td>
-                <td>
-                    <button type="button" id="edit" data-id=${i.ID} data-toggle="modal" data-target="#exampleModal" onclick=findById(${i.ID})>
-                        Ubah
-                    </button>
 
-                    <button id="hapus" data-id=${i.ID} class="hapus" onclick=deleteById(${i.ID})>
-                        Hapus
-                    </button>
-                </td>
-            </tr>
-
-            
-            `)
-        });
-        
-        // console.log(res[0].namaBarang);
-    })
-
-    
+    var awalkode = $("#inputKode").val()
+    var awalnama = $("#inputNama").val()
+   
 
     // console.log($("#inputKode").val() == awalkode)
     // console.log($("#inputNama").val() == awalnama)
@@ -76,7 +82,7 @@ $(document).ready(() => {
         if (generation == false) {
             
             Swal.fire(
-                'Anda harus Stop Generate',
+                'Anda harus Generate dan Stop Generate','', 'info'
               )
         } else if ($("#inputKode").val() == awalkode || $("#inputNama").val() == awalnama) {
             Swal.fire("Masukin nilainya semua dong");
@@ -86,41 +92,90 @@ $(document).ready(() => {
                 namaBarang: $("#inputNama").val(),
                 berat: $(".hasilGenerate").text()
             }
-            $.post("http://localhost:1880/record", data, (res, textStatus) => {
-                Swal.fire("Ciyee berhasil!", 'success')
-                location.reload()
-            }).fail((data, textStatus, xhr) => {
-                data.status == 500 ? Swal.fire("Ada yang salah nih") :
-                    data.status == 417 ? Swal.fire("Kode barang jangan Sama gitu ah!") :
-                    console.log(typeof (status), status);
+            Swal.fire({
+                title: 'Yakin save datanya?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Save',
+                denyButtonText: `Don't save`,
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.post("http://localhost:1880/record", data, (res, textStatus) => {
+                            Swal.fire('Saved!', '', 'success')
+                            .then(function(isConfirm) {
+                                if (isConfirm) {
+                                    location.reload();
+                                } else {
+                                //if no clicked => do something else
+                                }
+                            });
+                        }).fail((data, textStatus, xhr) => {
+                            data.status == 500 ? Swal.fire("Ada yang salah nih") :
+                                data.status == 417 ? Swal.fire("Kode barang jangan Sama gitu ah!") :
+                                console.log(typeof (status), status);
+                        })
+                  
+                } else if (result.isDenied) {
+                  Swal.fire('Changes are not saved', '', 'info')
+                }
             })
+            
         }
     })
+    
     $("#saveUpdate").click((res)=>{
+        res.preventDefault()
         if (generationEdit == true) {
-            Swal.fire("Stop in dulu generate nya!!!")
-        } else {
-            let id = $("#editId").val()
-        // $.put("http://localhost:1880/update/"+id  , data, function(res){
-        //     alert(res);
-        // })
-        $.ajax({
-            method: "PUT",
-            url: "http://localhost:1880/update/"+id,
-            dataType: "JSON",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "namaBarang" : $("#editNama").val(),
-                "kodeBarang" : $("#editKode").val(),
-                "berat" : $(".editGenerate").text()
-            }),
-            success: (result) => {
-                location.reload()
-                Swal.fire("data berhasil diubah", 'success')
-            }
-        })
+            Swal.fire(
+                'Anda harus Generate dan Stop Generate','', 'info'
+              )
+        }else if($("#editKode").val() == "" || $("#editNama").val() == ""){
+            Swal.fire("Jangan dikosongin!! Ada Mixue");
+        } else{
+            Swal.fire({
+                title: 'Yakin save datanya?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                denyButtonText: `Don't save`,
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method: "PUT",
+                        url: "http://localhost:1880/update/"+ $("#editId").val(),
+                        dataType: "JSON",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            kodeBarang: $("#editKode").val(),
+                            namaBarang: $("#editNama").val(),
+                            berat: $(".editGenerate").text()
+                        }),
+                        success: (result) => {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Region has been Updated',
+                                confirmButtonText: 'Ok'
+                            }).then((data, textStatus) => {
+                                location.reload()
+                            })
+                        },
+                        error : (data, textStatus, xhr) => {
+                            data.status == 500 ? Swal.fire("Ada yang salah nih") :
+                            data.status == 417 ? Swal.fire("Ubah Datanya dan Jangan sampai Duplikat!", "", "warning") :
+                            console.log(typeof (status), status);
+                        }
+
+                        
+                    })
+                  
+                } else if (result.isDenied) {
+                  Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
         }
-        
     })
 
     $("#editRandom").click(function () {
@@ -155,6 +210,7 @@ $(document).ready(() => {
 
 
 function findById(id) {
+    
     $.get("http://localhost:1880/edit/" + id, function (res) {
                 console.log(res[0])
                 $("#editId").val(res[0].ID);
@@ -162,39 +218,38 @@ function findById(id) {
                 $("#editNama").val(res[0].namaBarang);
                 $("#editKode").val(res[0].kodeBarang);
                 $(".editGenerate").text(parseFloat(res[0].berat));
-                
     })
+    
 }
 
-
 function deleteById(id) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+      
+      Swal.fire({
+        title: 'Yakin nih mau delete datanya?',
+        showDenyButton: true,
+        confirmButtonText: 'Delete',
+        denyButtonText: `Don't delete`,
       }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          
-          $.ajax({
-            method: "DELETE",
-            url: "http://localhost:1880/delete/" + id,
-            dataType: "json",
-            success: (result) => {
-                    Swal.fire(
-                        `Deleted!`,
-                        'Data of a row has been deleted.',
-                        'success'
-                      )
-                location.reload()
-                
-                  
+          Swal.fire('Delete!', '', 'success')
+          .then(function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    method: "DELETE",
+                    url: "http://localhost:1880/delete/" + id,
+                    dataType: "json",
+                    dataSrc: "",
+                    success: (result) => {
+                        location.reload();
+                    }
+                })
+            } else {
+              //if no clicked => do something else
             }
-        })
+          });
+        } else if (result.isDenied) {
+          Swal.fire('Oke Gajadi Didelete', '', 'info')
         }
-      })
-    
+    })
 }
